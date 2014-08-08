@@ -32,4 +32,13 @@ describe 'Role' do
       expect(test_role.authors_names).to eq ["George Lucas"]
     end
   end
+
+  describe '#edit' do
+    it 'edits role' do
+      test_role = Role.new({:name => "Director"})
+      test_role.save
+      test_role.edit("Terminator")
+      expect(Role.all[0]).to eq "Terminator"
+    end
+  end
 end
