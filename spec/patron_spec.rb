@@ -67,7 +67,7 @@ describe 'Patron' do
       test_patron = Patron.new({:name => "lil Joey"})
       test_patron.save
       test_patron.checkout(test_movie.id)
-      test_patron.checked_in
+      test_patron.checked_in(test_movie.id)
       expect(test_patron.checked_out_movies).to eq []
     end
   end
@@ -84,8 +84,26 @@ describe 'Patron' do
       test_patron.save
       test_patron.checkout(test_movie.id)
       test_patron.checkout(another_test.id)
-      test_patron.checked_in
+      test_patron.checked_in(test_movie.id)
       expect(test_patron.history).to eq ["THX 1138", "Adaptation"]
+    end
+  end
+
+  describe '#due_date' do
+    it 'returns a patrons checked out movies due date' do
+      test_movie = Movie.new({:name => "THX 1138"})
+      test_movie.save
+      another_test = Movie.new({:name => "Adaptation"})
+      another_test.save
+      test_movie.add_copies(5)
+      another_test.add_copies(2)
+      test_patron = Patron.new({:name => "lil Joey"})
+      test_patron.save
+      test_patron.checkout(test_movie.id)
+      test_patron.checkout(another_test.id)
+      test_patron.checkout(another_test.id)
+      test_patron.checked_in(test_movie.id)
+      expect(test_patron.due_date(another_test.id)).to eq (Time.new + 604800).strftime("%m/%d/%Y")
     end
   end
 end

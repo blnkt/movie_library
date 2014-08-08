@@ -1,10 +1,11 @@
 class Patron < Library
 
   def checkout movie_id
+    date = (Time.new + 604800).strftime("%m/%d/%Y")
     avail_copies = DB.exec("SELECT available_copies FROM copies WHERE movie_id = #{movie_id};").first['available_copies'].to_i
     unless avail_copies == 0
       result = DB.exec("SELECT id FROM copies WHERE movie_id = #{movie_id}").first['id'].to_i
-      DB.exec("INSERT INTO checkouts (copies_id, patron_id, due_date, returned) VALUES (#{result}, #{self.id}, '#{Time.new + 604800}', false);")
+      DB.exec("INSERT INTO checkouts (copies_id, patron_id, due_date, returned) VALUES (#{result}, #{self.id}, '#{date}', false);")
       avail_copies -= 1
       DB.exec("UPDATE copies SET available_copies = #{avail_copies} WHERE id = #{result}")
     else
@@ -21,8 +22,9 @@ class Patron < Library
     checked_out
   end
 
-  def checked_in
-    DB.exec("UPDATE checkouts SET returned = true WHERE patron_id = #{self.id};")
+  def checked_in movieID
+    results = DB.exec("SELECT checkouts.id FROM movies JOIN copies ON (movies.id = copies.movie_id) JOIN checkouts ON (copies.id = checkouts.copies_id) WHERE checkouts.patron_id = #{self.id} AND checkouts.returned = false AND movies.id = #{movieID};").first['id'].to_i
+    DB.exec("UPDATE checkouts SET returned = true WHERE patron_id = #{self.id} AND id = #{results};")
   end
 
   def history
@@ -32,5 +34,12 @@ class Patron < Library
       movie_history << movie['name']
     end
     movie_history
+  end
+
+  def due_date(movieID)
+    results = DB.exec("SELECT checkouts.due_date FROM movies JOIN copies ON (movies.id = copies.movie_id) JOIN checkouts ON (copies.id = checkouts.copies_id) WHERE patron_id = #{self.id} AND movies.id = #{movieID}").first['due_date']
+
+    #DB.exec("SELECT due_date FROM checkouts WHERE #{results} = id;")
+
   end
 end
