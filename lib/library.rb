@@ -24,6 +24,10 @@ class Library
     results
   end
 
+  def edit name
+    DB.exec("UPDATE #{self.class.to_s.downcase + 's'} SET name = '#{name}' WHERE id = #{self.id};")
+  end
+
   def == name
     name == self.name
   end

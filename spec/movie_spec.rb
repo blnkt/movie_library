@@ -71,5 +71,14 @@ describe 'Movie' do
     end
   end
 
+  describe '#edit' do
+    it 'edits name' do
+      test_movie = Movie.new({:name => "THX 1138"})
+      test_movie.save
+      test_movie.edit("American Graffittti")
+      expect(Movie.all[0]).to eq "American Graffittti"
+    end
+  end
+
 end
 

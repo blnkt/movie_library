@@ -85,7 +85,7 @@ describe 'Patron' do
       test_patron.checkout(test_movie.id)
       test_patron.checkout(another_test.id)
       test_patron.checked_in(test_movie.id)
-      expect(test_patron.history).to eq ["THX 1138", "Adaptation"]
+      expect(test_patron.history).to eq ["Adaptation", "THX 1138"]
     end
   end
 
@@ -103,7 +103,24 @@ describe 'Patron' do
       test_patron.checkout(another_test.id)
       test_patron.checkout(another_test.id)
       test_patron.checked_in(test_movie.id)
-      expect(test_patron.due_date(another_test.id)).to eq (Time.new + 604800).strftime("%m/%d/%Y")
+      expect(test_patron.due_date(another_test.id)).to eq (Time.new + 604800).strftime("%Y%m%d")
+    end
+  end
+
+
+  describe '#overdue' do
+    it 'returns all of a patrons overdue movies' do
+      test_movie = Movie.new({:name => "THX 1138"})
+      test_movie.save
+      this_test_movie = Movie.new({:name => "Fargo"})
+      this_test_movie.save
+      test_movie.add_copies(5)
+      this_test_movie.add_copies(2)
+      test_patron = Patron.new({:name => "lil Joey"})
+      test_patron.save
+      test_patron.checkout_overdue(test_movie.id)
+      test_patron.checkout(this_test_movie.id)
+      expect(test_patron.overdue).to eq ["THX 1138"]
     end
   end
 end
