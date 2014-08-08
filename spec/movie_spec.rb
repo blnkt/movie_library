@@ -62,14 +62,14 @@ describe 'Movie' do
     end
   end
 
-  # describe '#add_copies' do
-  #   it 'add a movie and total # of copies to copies table' do
-  #     test_movie = Movie.new({:name => "THX 1138"})
-  #     test_movie.save
-  #     test_movie.add_copies(5)
-  #     expect(test_movie.copies).to eq (5)
-  #   end
-  # end
+  describe '#add_copies' do
+    it 'add a movie and total # of copies to copies table' do
+      test_movie = Movie.new({:name => "THX 1138"})
+      test_movie.save
+      test_movie.add_copies(5)
+      expect(test_movie.copies).to eq (5)
+    end
+  end
 
 end
 

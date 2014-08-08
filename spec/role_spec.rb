@@ -22,14 +22,14 @@ describe 'Role' do
     end
   end
 
-#   describe '#add_author' do
-#     it 'associates an author with a role' do
-#       test_role = Role.new({:name => "Director"})
-#       test_role.save
-#       test_author = Author.new({:name => "George Lucas"})
-#       test_author.save
-#       test_role.add_author(test_author.id)
-#       expect(test_role.authors_names).to eq ["George Lucas"]
-#     end
-#   end
+  describe '#add_role' do
+    it 'associates an author with a role' do
+      test_role = Role.new({:name => "Director"})
+      test_role.save
+      test_author = Author.new({:name => "George Lucas"})
+      test_author.save
+      test_role.add_role(test_author.id)
+      expect(test_role.authors_names).to eq ["George Lucas"]
+    end
+  end
 end

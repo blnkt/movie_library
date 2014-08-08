@@ -47,16 +47,16 @@ describe 'Patron' do
     end
   end
 
-  # describe '#checkout' do
-  #   it 'checks out a movie to a patron for a week' do
-  #     test_movie = Movie.new({:title => "THX 1138"})
-  #     test_movie.save
-  #     test_movie.add_copies(5)
-  #     test_patron = Patron.new({:name => "lil Joey"})
-  #     test_patron.save
-  #     test_patron.checkout(test_movie.id)
-  #     expect(test_patron.checked_out_movies).to eq ["THX 1138"]
-  #   end
-  # end
+  describe '#checkout' do
+    it 'checks out a movie to a patron for a week' do
+      test_movie = Movie.new({:name => "THX 1138"})
+      test_movie.save
+      test_movie.add_copies(5)
+      test_patron = Patron.new({:name => "lil Joey"})
+      test_patron.save
+      test_patron.checkout(test_movie.id)
+      expect(test_patron.checked_out_movies).to eq ["THX 1138"]
+    end
+  end
 end
 

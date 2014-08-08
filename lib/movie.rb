@@ -15,11 +15,11 @@ class Movie < Library
     authors
   end
 
-  # def add_copies num_of_copies
-  #   DB.exec("INSERT INTO copies (movie_id, num_of_copies) VALUES ('#{self.id}', '#{num_of_copies}');")
-  # end
+  def add_copies available_copies
+    DB.exec("INSERT INTO copies (movie_id, available_copies) VALUES ('#{self.id}', '#{available_copies}');")
+  end
 
-  # def copies
-  #   DB.exec("SELECT num_of_copies FROM copies WHERE movie_id = '#{self.id}';")[0]['num_of_copies'].to_i
-  # end
+  def copies
+    DB.exec("SELECT available_copies FROM copies WHERE movie_id = '#{self.id}';")[0]['available_copies'].to_i
+  end
 end
