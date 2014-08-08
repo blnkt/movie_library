@@ -1,4 +1,4 @@
-class Author <Library
+class Author < Library
 
   def add_movie movie_id
     DB.exec("INSERT INTO movies_authors (movie_id, author_id) VALUES ('#{movie_id}', '#{self.id}');")

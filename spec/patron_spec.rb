@@ -58,5 +58,35 @@ describe 'Patron' do
       expect(test_patron.checked_out_movies).to eq ["THX 1138"]
     end
   end
+
+  describe '#checked_in' do
+    it 'changes the returned status to true' do
+      test_movie = Movie.new({:name => "THX 1138"})
+      test_movie.save
+      test_movie.add_copies(5)
+      test_patron = Patron.new({:name => "lil Joey"})
+      test_patron.save
+      test_patron.checkout(test_movie.id)
+      test_patron.checked_in
+      expect(test_patron.checked_out_movies).to eq []
+    end
+  end
+
+  describe '#history' do
+    it 'returns a patrons movie history' do
+      test_movie = Movie.new({:name => "THX 1138"})
+      test_movie.save
+      another_test = Movie.new({:name => "Adaptation"})
+      another_test.save
+      test_movie.add_copies(5)
+      another_test.add_copies(2)
+      test_patron = Patron.new({:name => "lil Joey"})
+      test_patron.save
+      test_patron.checkout(test_movie.id)
+      test_patron.checkout(another_test.id)
+      test_patron.checked_in
+      expect(test_patron.history).to eq ["THX 1138", "Adaptation"]
+    end
+  end
 end
 
